@@ -148,6 +148,10 @@
 ### [근무 관리]
 
 ### [마이페이지]
+드래그앤 드롭을 통한 근무 직책 설정 변경, 신규 직원 합류 푸시 알림, 개인정보 처리방침, 사업자 정보, 문의하기, 앱 버전, 로그아웃, 탈퇴하기 기능 제공
+<img width="240" alt="스크린샷 2024-11-25 오후 10 17 36" src="https://github.com/user-attachments/assets/97e8c6a7-0b3e-4c48-8ac6-ea500b948f2d">
+<img width="240" alt="스크린샷 2024-11-25 오후 10 17 59" src="https://github.com/user-attachments/assets/e6f2acc3-0c64-49a2-a37b-2c856cfc06d7">
+
 
 <br>
 

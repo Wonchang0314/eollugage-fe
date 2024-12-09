@@ -1,7 +1,6 @@
 import { useCallback } from 'react'
 import { useAtom } from 'jotai'
-import { isOwnerAtom } from '@/shared/atoms/globalAtom'
-import { stepAtom } from '../atoms/joinAtoms'
+import { isOwnerAtom, stepAtom } from '../atoms/joinAtoms'
 
 export default function useJoin() {
   const [step, setStep] = useAtom(stepAtom)
@@ -15,7 +14,7 @@ export default function useJoin() {
     setStep(prevStep => prevStep + 1) // 동적으로 다음 스텝으로 이동
   }
 
-  const setEmployeeRole = useCallback(() => {
+  const setMemberRole = useCallback(() => {
     setIsOwner(false)
   }, [setIsOwner])
 
@@ -28,7 +27,7 @@ export default function useJoin() {
     handleNextStep,
     handlePreviousStep,
     isOwner,
-    setEmployeeRole,
+    setMemberRole,
     setOwnerRole,
   }
 }

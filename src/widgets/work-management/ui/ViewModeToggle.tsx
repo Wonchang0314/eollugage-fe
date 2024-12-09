@@ -1,24 +1,14 @@
+import useAttendance from '../hooks/useAttendance'
 import ViewModeToggleChip from './ViewModeToggleChip'
 
-export default function ViewModeToggle({
-  selectedType,
-  setSelectedType,
-}: {
-  selectedType: 'week' | 'month'
-  setSelectedType: (type: 'week' | 'month') => void
-}) {
+export default function ViewModeToggle() {
+  const { type, setType } = useAttendance()
   return (
     <div className="border-4 border-[#E0E0E0] bg-[#E0E0E0] rounded-radius-03">
-      <ViewModeToggleChip
-        isActivated={selectedType === 'week'}
-        onClick={() => setSelectedType('week')}
-      >
+      <ViewModeToggleChip isActivated={type === 'WEEKLY'} onClick={() => setType('WEEKLY')}>
         주간
       </ViewModeToggleChip>
-      <ViewModeToggleChip
-        isActivated={selectedType === 'month'}
-        onClick={() => setSelectedType('month')}
-      >
+      <ViewModeToggleChip isActivated={type === 'MONTHLY'} onClick={() => setType('MONTHLY')}>
         월간
       </ViewModeToggleChip>
     </div>

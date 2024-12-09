@@ -6,12 +6,14 @@ interface BottomSheetProps {
   openBottomSheet: boolean
   setOpenBottomSheet: React.Dispatch<React.SetStateAction<boolean>>
   handleNextStep: () => void
+  storeId: string
 }
 
 export default function BottomSheet({
   openBottomSheet,
   setOpenBottomSheet,
   handleNextStep,
+  storeId,
 }: BottomSheetProps) {
   return (
     <Drawer open={openBottomSheet} onOpenChange={setOpenBottomSheet}>
@@ -26,7 +28,7 @@ export default function BottomSheet({
           </FlexBox>
           <div className="w-full mt-[48px] mb-[80px]">
             <TextField
-              value="aaaa"
+              value={storeId.slice(0, 4)}
               label="가게 코드"
               size="L"
               style="underlined"

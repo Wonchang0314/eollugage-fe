@@ -16,7 +16,8 @@ export default function PositionGroup({ id, position, items, index, length }: Po
           >
             <li className="body-03-bold text-text-primary justify-content">{position}</li>
             {items.map((item, idx) => (
-              <Draggable key={item.id} draggableId={item.id} index={idx}>
+              // eslint-disable-next-line react/no-array-index-key
+              <Draggable key={item.memberId + idx} draggableId={item.memberId} index={idx}>
                 {draggableProvided => (
                   <li
                     className="flex justify-between py-spacing-04 transition-colors"

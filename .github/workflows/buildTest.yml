@@ -31,5 +31,13 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install
 
+      - name: Create .env file
+        run: |
+          echo SERVER_URL=${{ secrets.SERVER_URL }} >> .env
+          echo NEXT_PUBLIC_PRESIGNED_URL_SERVER=${{ secrets.NEXT_PUBLIC_PRESIGNED_URL_SERVER }} >> .env
+          echo NEXT_PUBLIC_SECRET_KEY=${{ secrets.NEXT_PUBLIC_SECRET_KEY }} >> .env
+          echo NEXT_PUBLIC_APP_ID=${{ secrets.NEXT_PUBLIC_APP_ID }} >> .env
+          echo NEXT_PUBLIC_SHA_256=${{ secrets.NEXT_PUBLIC_SHA_256 }} >> .env
+
       - name: Run build test
         run: yarn build

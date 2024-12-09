@@ -1,4 +1,3 @@
-import { getRandomColor } from '@/features'
 import FlexBox from '@/shared/ui/Flexbox'
 import { Avatar, ButtonMobile, TopBar } from '@eolluga/eolluga-ui'
 import { useRouter } from 'next/navigation'
@@ -7,18 +6,24 @@ import useJoin from '../hooks/useJoin'
 interface UserProfileProps {
   name: string
   store: string
+  storeId: string
   handlePreviousStep: () => void
 }
 
-export default function UserProfile({ name, store, handlePreviousStep }: UserProfileProps) {
+export default function UserProfile({
+  name,
+  store,
+  storeId,
+  handlePreviousStep,
+}: UserProfileProps) {
   const router = useRouter()
-  const { isOwner, handleNextStep } = useJoin()
+  const { isOwner } = useJoin()
   return (
     <>
       <TopBar leftIcon="chevron_left_outlined" onClickLeftIcon={handlePreviousStep} />
       <FlexBox direction="col" className="gap-spacing-04 mt-[152px]">
         <div className="text-white">
-          <Avatar size="XL" backgroundColor={getRandomColor()} text={name[0]} />
+          <Avatar size="XL" backgroundColor="in-gray" text={name[0]} />
         </div>
         <FlexBox direction="col" className="gap-spacing-01">
           <div className="head-02-bold">
@@ -33,7 +38,11 @@ export default function UserProfile({ name, store, handlePreviousStep }: UserPro
             state="enabled"
             type="text"
             text1={isOwner ? '프로필 생성하기' : '출근하기'}
-            onClick={isOwner ? handleNextStep : () => router.push('/home')}
+            onClick={
+              isOwner
+                ? () => router.push(`join/upload-image?storeId=${storeId}`)
+                : () => router.push(`/${storeId}/home`)
+            }
           />
         </FlexBox>
       </FlexBox>

@@ -1,5 +1,5 @@
+import { useState, useEffect, useCallback } from 'react'
 import { PositionGroupType } from '@/shared/types/myPageTypes'
-import { v4 as uuidv4 } from 'uuid'
 import { Button } from '@/shared/ui/shadcn/button'
 import {
   Drawer,
@@ -10,43 +10,57 @@ import {
   DrawerTrigger,
 } from '@/shared/ui/shadcn/drawer'
 import { TextField, Icon } from '@eolluga/eolluga-ui'
-import { useState } from 'react'
 
 export default function BottomSheet({
   positionList,
   onAddPosition,
+  onChangePosition,
   onDeletePosition,
   isOpen,
   closeBottomSheet,
 }: {
   positionList: PositionGroupType[]
   onAddPosition: (newPosition: PositionGroupType) => void
+  onChangePosition: (index: number, newPosition: string) => void
   onDeletePosition: (id: string) => void
   isOpen: boolean
   closeBottomSheet: () => void
 }) {
-  const [positions, setPositions] = useState<PositionGroupType[]>(positionList)
+  const [positionStates, setPositionStates] = useState<string[]>([])
   const [inputValue, setInputValue] = useState<string>('')
 
-  const handlePositionsChange = (value: string, index: number) => {
-    const updatedList = [...positionList]
-    updatedList[index].position = value
-    setPositions(updatedList)
-  }
+  useEffect(() => {
+    const updatedPositions = positionList.map(e => e.position)
+    setPositionStates(updatedPositions)
+  }, [positionList])
 
-  const addNewPosition = (newPosition: string) => {
-    if (newPosition.trim() !== '') {
+  const handlePositionChange = useCallback(
+    (newPosition: string, index: number) => {
+      setPositionStates(prevStates => {
+        const updatedStates = [...prevStates]
+        updatedStates[index] = newPosition
+        return updatedStates
+      })
+      onChangePosition(index, newPosition)
+    },
+    [onChangePosition],
+  )
+
+  const updatePosition = () => {
+    if (inputValue.trim() !== '') {
       const newPositionItem: PositionGroupType = {
-        id: uuidv4(),
-        position: newPosition,
+        position: inputValue,
         items: [],
       }
+      setPositionStates([...positionStates, inputValue])
       onAddPosition(newPositionItem)
+      setInputValue('')
     }
     closeBottomSheet()
   }
 
   const handleDelete = (id: string) => {
+    setPositionStates(prevStates => prevStates.filter(position => position !== id))
     onDeletePosition(id)
   }
 
@@ -55,45 +69,47 @@ export default function BottomSheet({
       <DrawerTrigger asChild>
         <Button variant="outline">직책 선택</Button>
       </DrawerTrigger>
-      <DrawerContent className="h-5/6" aria-describedby="set-positions">
+      <DrawerContent
+        className="w-full h-4/5 max-h-[75dvh] flex flex-col"
+        aria-describedby="set-positions"
+      >
         <DrawerHeader className="relative">
           <DrawerTitle>가게 직책</DrawerTitle>
           <DrawerDescription />
-          <button
-            type="button"
-            onClick={() => addNewPosition(inputValue)}
-            className="absolute top-5 right-7"
-          >
+          <button type="button" onClick={updatePosition} className="absolute top-5 right-7">
             <span className="text-support-info body-03-medium">저장</span>
           </button>
         </DrawerHeader>
-        <div className="flex flex-col space-y-4 justify-between">
-          {positionList.map((position, idx) => (
-            <div key={position.id} className="flex justify-between items-center px-5">
-              <TextField
-                value={positions[idx].position}
-                onChange={e => handlePositionsChange(e.target.value, idx)}
-                size="M"
-                style="outlined"
-                placeholder="직책 입력"
-              />
-              <button type="button" onClick={() => handleDelete(position.id)} className="p-3">
-                <Icon icon="delete" />
-              </button>
+        <div className="flex-1 overflow-y-scroll pb-32 flex flex-col gap-2">
+          {positionStates.length > 0 ? (
+            positionStates.map((position, index) => (
+              <div key={position} className="flex justify-between px-5">
+                <TextField
+                  value={position}
+                  onChange={e => handlePositionChange(e.target.value, index)}
+                  size="M"
+                  style="outlined"
+                  placeholder="직책 입력"
+                />
+                <button type="button" onClick={() => handleDelete(position)} className="p-3">
+                  <Icon icon="delete" />
+                </button>
+              </div>
+            ))
+          ) : (
+            <div className="flex justify-center items-center">
+              <p className="text-text-secondary">추가된 직책이 아직 없어요</p>
             </div>
-          ))}
+          )}
         </div>
-
-        <div className="w-full border-t-2 fixed bottom-4 pt-3">
-          <div className=" px-4">
-            <TextField
-              value={inputValue}
-              onChange={e => setInputValue(e.target.value)}
-              size="M"
-              style="outlined"
-              placeholder="직책 추가하기"
-            />
-          </div>
+        <div className="w-full border-t-2 fixed bottom-4 pt-3 px-4 bg-white">
+          <TextField
+            value={inputValue}
+            onChange={e => setInputValue(e.target.value)}
+            size="M"
+            style="outlined"
+            placeholder="직책 추가하기"
+          />
         </div>
       </DrawerContent>
     </Drawer>

@@ -1,9 +1,16 @@
 import Image from 'next/image'
 import LoginButton from '@/widgets/join/ui/LoginButton'
 import FlexBox from '@/shared/ui/Flexbox'
+import { redirect } from 'next/navigation'
+import { fetchUserInfo } from '@/entities'
 import styles from './page.module.css'
 
-export default function Home() {
+export default async function Home() {
+  const userInfo = await fetchUserInfo()
+  if (userInfo && userInfo.storeList.length > 0) redirect(`/${userInfo.storeList[0].storeId}/home`)
+  if (userInfo && userInfo.relationList.length > 0 && userInfo.relationList[0].storeId)
+    redirect(`/${userInfo.relationList[0].storeId}/home`)
+
   return (
     <FlexBox
       direction="col"

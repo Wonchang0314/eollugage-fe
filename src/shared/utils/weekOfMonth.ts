@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable no-fallthrough */
-import { WeekOfMonth, WeekDates } from '../types/weekOfMonth'
+import { WeekOfMonth, WeekDates } from '../types/weekOfMonthType'
 
 export const getWeekOfMonth = (date: Date): WeekOfMonth => {
   const currentDay = date.getDate()

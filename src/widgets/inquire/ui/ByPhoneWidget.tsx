@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { TopBar, TextField, ButtonMobile } from '@eolluga/eolluga-ui'
 import ToastMessage from '@/shared/ui/ToastMessage'
 
-export default function ByPhoneWidget() {
+export default function ByPhoneWidget({ storeId }: { storeId: string }) {
   const { push } = useRouter()
   const [isClicked, setIsClicked] = useState(false)
   const phoneNumber = '010-4000-9842'
@@ -17,7 +17,11 @@ export default function ByPhoneWidget() {
 
   return (
     <div className="pt-4">
-      <TopBar leftIcon="close" title="" onClickLeftIcon={() => push('/mypage/setting/inquire')} />
+      <TopBar
+        leftIcon="close"
+        title=""
+        onClickLeftIcon={() => push(`/${storeId}/mypage/setting/inquire`)}
+      />
       <div className="mt-4 gap-spacing-02 p-4">
         <h2 className="body-05-bold">전화로 문의하기</h2>
         <div className="pt-spacing-02 body-02-medium text-text-secondary">
@@ -34,6 +38,7 @@ export default function ByPhoneWidget() {
           onChange={() => {}}
           size="L"
           style="outlined"
+          state="readOnly"
         />
       </div>
 

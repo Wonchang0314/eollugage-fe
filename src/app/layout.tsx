@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import '@eolluga/eolluga-ui/dist/index.css'
 import ProviderLayout from '@/shared/ui/ProviderLayout'
+import RNListener from '@/shared/ui/RNListener'
 
 export const metadata: Metadata = {
   title: '얼루가게',
@@ -17,6 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased h-dvh">
         <ProviderLayout>
+          <RNListener />
           <div className="relative h-full m-auto">{children}</div>
         </ProviderLayout>
       </body>

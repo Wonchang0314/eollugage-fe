@@ -16,7 +16,7 @@ export default function BadgeCard() {
           <Image width={192} height={51} alt="text1" src="/image/eollugage_badge_text1.svg" />
           <Image width={192} height={49} alt="text2" src="/image/eollugage_badge_text2.svg" />
         </FlexBox>
-        <div className="body-05-bold-compact text-white pl-spacing-05 mt-[108px]">
+        <div className="body-05-bold-compact text-text-on-color pl-spacing-05 mt-[108px]">
           얼루가게
           <br />
           출입증

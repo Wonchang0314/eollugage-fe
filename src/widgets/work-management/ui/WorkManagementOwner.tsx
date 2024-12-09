@@ -1,23 +1,28 @@
-'use client'
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
+import { getHistories, getMembers } from '@/entities'
+import { getWeekOfMonth } from '@/shared'
+import WorkManagementOwnerClient from './WorkManagementOwnerClient'
 
-import React from 'react'
+export default async function WorkManagementOwner({ storeId }: { storeId: string }) {
+  const queryClient = new QueryClient()
+  await queryClient.prefetchQuery({
+    queryKey: ['members', storeId],
+    queryFn: () => getMembers(storeId),
+  })
+  const members = queryClient.getQueryData(['members', storeId])
 
-import { useSetAtom } from 'jotai'
-import WorkerSelector from './WorkerSelector'
-import { selectedWorkerAtom } from '../atoms/workManagementAtoms'
-import AttendanceInfo from './AttendanceInfo'
-import AddAttendanceLink from './AddAttendanceLink'
+  const { year, month, weekOfMonth } = getWeekOfMonth(new Date())
+  if (members && Array.isArray(members)) {
+    await queryClient.prefetchQuery({
+      queryKey: ['histories', members[0]?.memberId, 'WEEKLY', year, month, weekOfMonth],
+      queryFn: () =>
+        getHistories(storeId, members[0]?.memberId, 'WEEKLY', year, month, weekOfMonth),
+    })
+  }
 
-export default function WorkManagementOwner() {
-  const setSelectedWorkerID = useSetAtom(selectedWorkerAtom)
-  setSelectedWorkerID('1')
   return (
-    <>
-      <WorkerSelector />
-      <AttendanceInfo />
-      <div className="bottom-[84px] right-4 absolute">
-        <AddAttendanceLink />
-      </div>
-    </>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <WorkManagementOwnerClient storeId={storeId} />
+    </HydrationBoundary>
   )
 }

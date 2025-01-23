@@ -1,6 +1,6 @@
 import { getStoreInfo } from '@/entities/store/api/getStoreInfo'
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
-import { checkIsOwner, fetchUserInfo, StoreInfoT } from '@/entities'
+import { fetchUserInfo, StoreInfoT } from '@/entities'
 import HomeWidgetClient from './HomeWidgetClient'
 
 interface HomeWidgetServerProps {
@@ -11,7 +11,7 @@ export async function HomeWidgetServer({ storeId }: HomeWidgetServerProps) {
   const userInfo = await fetchUserInfo()
   if (userInfo === undefined) return null
 
-  const isOwner = checkIsOwner(userInfo)
+  const isOwner = userInfo.storeList.length > 0
 
   const queryClient = new QueryClient()
   await queryClient.prefetchQuery({

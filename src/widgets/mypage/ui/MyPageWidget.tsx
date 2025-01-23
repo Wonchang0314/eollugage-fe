@@ -33,25 +33,46 @@ export default function MyPageWidget({
 
   return (
     <div className="flex flex-col min-h-screen justify-between">
-      <main className="flex-grow">
-        <div className="h-8 flex justify-end gap-4 mt-4 mr-4">
-          {isOwner && (
+      {isOwner && (
+        <main className="flex-grow">
+          <div className="h-8 flex justify-end gap-4 mt-4 mr-4">
             <Link href={`/${storeId}/mypage/position`}>
               <Icon icon="id" />
             </Link>
-          )}
-          <Link href={`/${storeId}/mypage/setting`}>
-            <Icon icon="gear" />
-          </Link>
-        </div>
-        <div className="flex p-spacing-04 gap-spacing-01 items-center">
-          <Avatar icon="account" input="text" size="M" text="" />
-          <div className="ml-4">
-            <h2 className="body-03-bold text-text-primary">{userData?.name}</h2>
-            <p className="text-text-secondary body-01-bold">{userData?.relationDTO.position}</p>
+            <Link href={`/${storeId}/mypage/setting`}>
+              <Icon icon="gear" />
+            </Link>
           </div>
-        </div>
-      </main>
+          <div className="flex p-spacing-04 gap-spacing-01 items-center">
+            <Avatar icon="account" input="text" size="M" text="" />
+            <div className="ml-4">
+              <h2 className="body-03-bold text-text-primary">{userData?.name}</h2>
+              <p className="text-text-secondary body-01-bold">
+                {userData?.relationList[0].position}
+              </p>
+            </div>
+          </div>
+        </main>
+      )}
+
+      {!isOwner && (
+        <main className="flex-grow">
+          <div className="h-[32px] flex justify-end gap-4 mt-4 mr-4">
+            <Link href={`/${storeId}/mypage/setting`}>
+              <Icon icon="gear" />
+            </Link>
+          </div>
+          <div className="flex p-spacing-04 gap-spacing-01 items-center">
+            <Avatar icon="account" input="text" size="M" text="" />
+            <div className="ml-4">
+              <h2 className="body-03-bold text-text-primary">{userData?.name}</h2>
+              <p className="text-text-secondary body-01-bold">
+                {userData?.relationList[0].position}
+              </p>
+            </div>
+          </div>
+        </main>
+      )}
     </div>
   )
 }

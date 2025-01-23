@@ -23,7 +23,11 @@ export function useLoginToken() {
   }, [])
 
   useEffect(() => {
-    if (userInfo && pathname === '/') router.replace(`/${userInfo.relationDTO.storeId}/home`)
+    if (userInfo && pathname === '/') {
+      if (userInfo.storeList.length > 0) router.replace(`/${userInfo.storeList[0].storeId}/home`)
+      else if (userInfo.relationList.length > 0)
+        router.replace(`/${userInfo.relationList[0].storeId}/home`)
+    }
   }, [userInfo, pathname])
 
   return { onSuccessGetToken }
